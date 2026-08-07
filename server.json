@@ -3,7 +3,7 @@
   "name": "app.2ools/mcp",
   "title": "2ools",
   "description": "Build, version, review, and export websites, web apps, and games from a conversation.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "websiteUrl": "https://2ools.app/connect-ai",
   "repository": {
     "url": "https://github.com/2ools/mcp-server",
