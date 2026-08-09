@@ -9,7 +9,7 @@ discussion.
 
 ## Report a vulnerability
 
-Email **2ools.build@gmail.com** with:
+Email **hello@2ools.app** with:
 
 - the affected URL, manifest field, tool, or documentation claim;
 - reproduction steps and expected versus actual behavior;
