@@ -46,6 +46,14 @@ Add to your MCP config:
 
 Full setup guide, including OAuth for paid features: **<https://2ools.app/connect-ai>**
 
+### 2ools Skill
+
+For assistants that support repository skills, add or copy the
+[2ools Skill](./skills/2ools/SKILL.md). It keeps the temporary-preview and
+OAuth workspace boundaries explicit. Client support for remote MCP and Skill
+folders varies; use that client’s documented connection flow when it does not
+support this layout.
+
 ### Try it with no account
 
 Ask your assistant:
