@@ -4,6 +4,7 @@ import test from "node:test";
 
 const skill = await readFile(new URL("../skills/2ools/SKILL.md", import.meta.url), "utf8");
 const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
+const manifest = JSON.parse(await readFile(new URL("../server.json", import.meta.url), "utf8"));
 
 test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/mcp/);
@@ -18,4 +19,11 @@ test("2ools skill preserves the public MCP authority boundary", () => {
 test("README links the public skill and keeps the free preview boundary", () => {
   assert.match(readme, /\[2ools Skill\]\(\.\/skills\/2ools\/SKILL\.md\)/);
   assert.match(readme, /One tool is free and needs no account at all/);
+});
+
+test("public discovery makes the Free-to-paid scope boundary explicit", () => {
+  assert.equal(
+    manifest.description,
+    "Free previews and workspace projects for LLM-built websites; paid plans add governance, agent, and artifact scopes.",
+  );
 });
