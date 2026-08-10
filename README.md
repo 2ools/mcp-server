@@ -46,6 +46,24 @@ Add to your MCP config:
 
 Full setup guide, including OAuth for paid features: **<https://2ools.app/connect-ai>**
 
+### Registry introspection proxy
+
+Registries that require a local stdio process can run the included credential-free
+proxy. It forwards MCP JSON-RPC traffic to the same verified remote endpoint; it
+does not mock or reimplement any 2ools tools. It translates the stdio handshake
+into the remote endpoint's current per-request MCP envelope and returns the live
+schemas from 2ools.
+
+```bash
+npm ci
+npm start
+```
+
+The included `Dockerfile` runs the same dependency-free proxy for reproducible
+registry introspection. It intentionally does not perform an interactive OAuth
+flow. Clients using authenticated workspace tools should connect directly to
+`https://2ools.app/mcp` so OAuth remains end-to-end with 2ools.
+
 ### 2ools Skill
 
 For assistants that support repository skills, add or copy the
