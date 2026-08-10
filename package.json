@@ -1,0 +1,11 @@
+{
+  "name": "@2ools/mcp-server-proxy",
+  "version": "0.3.1",
+  "private": true,
+  "description": "Credential-free stdio introspection proxy for the official 2ools remote MCP server.",
+  "license": "MIT",
+  "scripts": {
+    "start": "node proxy.mjs",
+    "test": "node --test"
+  }
+}

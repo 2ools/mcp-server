@@ -5,6 +5,11 @@ import test from "node:test";
 const skill = await readFile(new URL("../skills/2ools/SKILL.md", import.meta.url), "utf8");
 const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
 const manifest = JSON.parse(await readFile(new URL("../server.json", import.meta.url), "utf8"));
+const packageManifest = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url), "utf8"),
+);
+const dockerfile = await readFile(new URL("../Dockerfile", import.meta.url), "utf8");
+const proxy = await readFile(new URL("../proxy.mjs", import.meta.url), "utf8");
 
 test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/mcp/);
@@ -26,4 +31,17 @@ test("public discovery makes the Free-to-paid scope boundary explicit", () => {
     manifest.description,
     "Free previews and workspace projects for LLM-built websites; paid plans add governance, agent, and artifact scopes.",
   );
+});
+
+test("the runnable proxy stays pinned to the verified remote server", () => {
+  assert.equal(packageManifest.scripts.start, "node proxy.mjs");
+  assert.equal(packageManifest.dependencies, undefined);
+  assert.match(dockerfile, /npm ci --omit=dev/);
+  assert.match(dockerfile, /ENTRYPOINT \["node", "proxy\.mjs"\]/);
+  assert.match(proxy, /const REMOTE_URL = "https:\/\/2ools\.app\/mcp"/);
+  assert.match(proxy, /const REMOTE_PROTOCOL_VERSION = "2026-07-28"/);
+  assert.match(proxy, /"Mcp-Method": message\.method/);
+  assert.match(proxy, /"io\.modelcontextprotocol\/protocolVersion"/);
+  assert.match(proxy, /"io\.modelcontextprotocol\/clientCapabilities"/);
+  assert.match(readme, /intentionally does not perform an interactive OAuth\s+flow/);
 });
