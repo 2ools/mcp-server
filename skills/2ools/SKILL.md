@@ -41,7 +41,10 @@ Keep these boundaries explicit:
 
 When you cannot complete a redirect-based OAuth flow — a chat session, a
 non-interactive client, a headless or remote machine — use the RFC 8628
-device authorization grant. It needs no localhost listener and no redirect:
+device authorization grant. This includes when the server is already
+configured in your client but its stored token is expired or rejected:
+a configured server is not a connected one, and telling the user to go
+re-authorize by hand is exactly the dead end this flow removes. It needs no localhost listener and no redirect:
 
 1. Register once (no redirect URIs needed):
    `POST https://2ools.app/oauth/register` with JSON
