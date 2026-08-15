@@ -49,16 +49,22 @@ device authorization grant. It needs no localhost listener and no redirect:
 2. Start the flow: `POST https://2ools.app/oauth/device_authorization`
    (form-encoded `client_id`, optional `scope`). The response contains
    `verification_uri_complete`, a human `user_code`, and a `device_code`.
-3. Show the user ONE link — `verification_uri_complete` — and tell them to
-   open it in their own browser, sign in if asked, and click Authorize.
-   Never ask for their password yourself.
-4. Poll `POST https://2ools.app/oauth/token` (form-encoded
+3. OPEN `verification_uri_complete` for the user — do not just print it.
+   Use your environment's browser tool if you have one; otherwise run the
+   platform opener from a shell (`open <url>` on macOS, `xdg-open <url>` on
+   Linux, `start <url>` on Windows). Print the link only if you cannot open
+   a browser at all. Never ask for their password yourself.
+4. Say ONE short line — "I've opened the 2ools authorization page; click
+   Authorize and I'll finish connecting." — then poll quietly:
+   `POST https://2ools.app/oauth/token` (form-encoded
    `grant_type=urn:ietf:params:oauth:grant-type:device_code`, `device_code`,
-   `client_id`) no faster than the returned `interval`. `authorization_pending`
-   means keep waiting; `access_denied` means the user declined; success returns
-   the bearer tokens.
+   `client_id`) no faster than the returned `interval`.
+   `authorization_pending` means keep waiting; `access_denied` means the user
+   declined; success returns the bearer tokens.
 
-State plainly while waiting that the user has not approved yet. Do not claim
+Connect FIRST, work second: do not draft plans, introductions, or summaries
+before the connection exists. Keep the whole setup under a few sentences of
+output — a wall of narration is what makes people close the tab. Do not claim
 a connection exists before the token arrives.
 
 ## Client setup
