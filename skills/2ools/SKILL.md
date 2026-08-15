@@ -57,10 +57,13 @@ re-authorize by hand is exactly the dead end this flow removes. It needs no loca
    (form-encoded `client_id`, optional `scope`). The response contains
    `verification_uri_complete`, a human `user_code`, and a `device_code`.
 3. OPEN `verification_uri_complete` for the user — do not just print it.
-   Use your environment's browser tool if you have one; otherwise run the
-   platform opener from a shell (`open <url>` on macOS, `xdg-open <url>` on
-   Linux, `start <url>` on Windows). Print the link only if you cannot open
-   a browser at all. Never ask for their password yourself.
+   Priority order, and it matters: FIRST your client's own in-app browser or
+   preview pane (Claude Code's Browser pane via preview/navigate tools, an
+   IDE's built-in browser) so the user never leaves the conversation; ONLY if
+   no in-app browser exists, run the platform opener from a shell
+   (`open <url>` on macOS, `xdg-open <url>` on Linux, `start <url>` on
+   Windows); print the link only if you cannot open a browser at all.
+   Never ask for their password yourself.
 4. Say ONE short line — "I've opened the 2ools authorization page; click
    Authorize and I'll finish connecting." If the user may not have a 2ools
    account, add: "no account? that page lets you create one — I'll pick up
