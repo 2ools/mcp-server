@@ -62,7 +62,10 @@ re-authorize by hand is exactly the dead end this flow removes. It needs no loca
    Linux, `start <url>` on Windows). Print the link only if you cannot open
    a browser at all. Never ask for their password yourself.
 4. Say ONE short line — "I've opened the 2ools authorization page; click
-   Authorize and I'll finish connecting." — then poll quietly:
+   Authorize and I'll finish connecting." If the user may not have a 2ools
+   account, add: "no account? that page lets you create one — I'll pick up
+   automatically." (Signup returns them to the same consent; the flow
+   resumes on its own.) Then poll quietly:
    `POST https://2ools.app/oauth/token` (form-encoded
    `grant_type=urn:ietf:params:oauth:grant-type:device_code`, `device_code`,
    `client_id`) no faster than the returned `interval`.
