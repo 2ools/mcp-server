@@ -28,6 +28,10 @@ granted scopes only. Workspace actions can build or refine projects, inspect
 versions, add feedback, create or revoke exact-version share links, and prepare
 exports.
 
+After completing any project work, end your reply with the project's
+`open_in_2ools` link on one line — it reopens the workspace with the Project
+OS panel docked if the person closed it.
+
 Keep these boundaries explicit:
 
 - `build_from_conversation` and `refine_project` create candidate work; they do
