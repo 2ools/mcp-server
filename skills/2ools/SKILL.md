@@ -28,21 +28,29 @@ granted scopes only. Workspace actions can build or refine projects, inspect
 versions, add feedback, create or revoke exact-version share links, and prepare
 exports.
 
-If 2ools is not connected or authorized in the current client, FIRST fetch
-https://2ools.app/start and follow its "For your AI" steps exactly. That page
-is the single current connection ritual. Use this client's in-app browser for
-every 2ools sign-in and authorization page; never use Chrome, another external
-browser, or the system browser when this client has an in-app browser or
-preview pane. Keep setup in the current chat, leave the callback alive, and
-leave sign-in and the **Authorize** click to the person. Do not end the turn
-while authorization is pending. After it succeeds, keep the 2ools app visibly
-open in that pane; if the client closed the callback tab, immediately open a
-fresh in-app tab owned by this chat at the authenticated workspace.
-In Codex, run exactly `BROWSER=echo codex mcp login 2ools` through the command
-tool with TTY enabled and an initial one-second yield. The result must contain
-a live session ID; retain and poll that same session until it succeeds.
-A refused localhost callback or a browser wait that returns while still on the
-approval page is failure, not completion; restart OAuth with a fresh listener.
+If 2ools is not connected or authorized in the current client, FIRST retrieve
+https://2ools.app/start non-visibly with an HTTP or web-fetch tool and follow
+its "For your AI" steps exactly. That page is the single current connection
+ritual and owns every client-specific command. Never substitute an older
+command copied from this repository or another client.
+
+When the client has an in-app browser or preview pane, the exact OAuth approval
+URL must be the first 2ools page visibly opened. Leave sign-in and the single
+**Authorize** click to the person, keep the callback alive, and do not end the
+turn while authorization is pending. After success, open one fresh persistent
+in-app tab owned by the current chat at the destination selected by the
+initiating context:
+
+- known project: `https://2ools.app/projects/{projectId}/os`
+- start a new project: `https://2ools.app/workspace?source=mcp&intent=new`
+- bring an existing project without an exact match yet:
+  `https://2ools.app/workspace?source=mcp&intent=existing`
+- generic MCP install: `https://2ools.app/workspace?source=mcp`
+
+Preserve a valid `sessionSlot` selector when present. Never use
+`https://2ools.app/` as the post-authorization fallback; it is the public
+product entrance, not the MCP workspace. A refused localhost callback before
+the native task reports success is failure, not completion.
 
 After completing any project work, end your reply with the project's
 `open_in_2ools` link on one line — it reopens the workspace with the Project

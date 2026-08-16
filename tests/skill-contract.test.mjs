@@ -10,8 +10,9 @@ const packageManifest = JSON.parse(
 );
 const dockerfile = await readFile(new URL("../Dockerfile", import.meta.url), "utf8");
 const proxy = await readFile(new URL("../proxy.mjs", import.meta.url), "utf8");
+const normalizedSkill = skill.replace(/\s+/g, " ");
 const canonicalPrompt =
-  'Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client\'s in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane, opening a fresh in-app tab owned by this chat if the client closed the callback tab. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.';
+  'Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Retrieve https://2ools.app/start non-visibly with an HTTP or web-fetch tool; never navigate the in-app browser to that instructions page. Use this client\'s in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. The exact OAuth approval URL must be the first 2ools page you visibly open. Before I must act, your only user-facing setup message may be `Connecting 2ools in this client\'s browser…`. Do not output insight blocks or narrate setup mechanics. Ask me exactly once to sign in and click Authorize. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.';
 
 test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/mcp/);
@@ -21,14 +22,17 @@ test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /OAuth 2\.1 with PKCE/);
   assert.match(skill, /Version approval is separate authority/);
   assert.match(skill, /https:\/\/2ools\.app\/start/);
-  assert.match(skill, /single current connection ritual/);
-  assert.match(skill, /this client's in-app browser/);
-  assert.match(skill, /Do not end the turn\s+while authorization is pending/);
-  assert.match(skill, /client closed the callback tab/);
-  assert.match(skill, /BROWSER=echo codex mcp login 2ools/);
-  assert.match(skill, /TTY enabled/);
-  assert.match(skill, /live session ID/);
+  assert.match(normalizedSkill, /single current connection ritual/);
+  assert.match(normalizedSkill, /client has an in-app browser or preview pane/);
+  assert.match(normalizedSkill, /do not end the turn while authorization is pending/i);
+  assert.match(normalizedSkill, /single \*\*Authorize\*\* click/);
+  assert.match(skill, /projects\/\{projectId\}\/os/);
+  assert.match(skill, /workspace\?source=mcp&intent=new/);
+  assert.match(skill, /workspace\?source=mcp&intent=existing/);
+  assert.match(skill, /workspace\?source=mcp/);
+  assert.match(normalizedSkill, /Never use `https:\/\/2ools\.app\/` as the post-authorization fallback/);
   assert.match(skill, /refused localhost callback/);
+  assert.doesNotMatch(skill, /BROWSER=echo codex mcp login 2ools/);
   assert.doesNotMatch(skill, /oauth\/device_authorization|claude mcp add|"mcpServers"/);
   assert.doesNotMatch(skill, /no account.*build|build.*no account/i);
 });
