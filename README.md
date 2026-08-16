@@ -25,13 +25,18 @@ connect over OAuth 2.1 with PKCE and least-privilege scopes.
 
 Paste this into the AI client you want to connect:
 
-> Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client's in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane, opening a fresh in-app tab owned by this chat if the client closed the callback tab. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.
+> Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Retrieve https://2ools.app/start non-visibly with an HTTP or web-fetch tool; never navigate the in-app browser to that instructions page. Use this client's in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. The exact OAuth approval URL must be the first 2ools page you visibly open. Before I must act, your only user-facing setup message may be `Connecting 2ools in this client's browser…`. Do not output insight blocks or narrate setup mechanics. Ask me exactly once to sign in and click Authorize. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.
 
 The live [start page](https://2ools.app/start) is the single current connection
 ritual for every client. It detects the current client path, keeps OAuth alive,
 and leaves only sign-in and the **Authorize** click to the person. Manual MCP
 configuration is a fallback only for clients that cannot manage their own
 remote-MCP setup.
+
+After authorization, the initiating context selects the app destination: an
+exact project's Project OS when its ID is known, the new-project or
+existing-project workspace flow when that intent is known, and the authenticated
+MCP workspace for a generic install. The public homepage is never the fallback.
 
 ### Registry introspection proxy
 
