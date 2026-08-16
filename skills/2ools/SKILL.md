@@ -38,8 +38,9 @@ leave sign-in and the **Authorize** click to the person. Do not end the turn
 while authorization is pending. After it succeeds, keep the 2ools app visibly
 open in that pane; if the client closed the callback tab, immediately open a
 fresh in-app tab owned by this chat at the authenticated workspace.
-In Codex, the native `codex mcp login 2ools` command must remain attached to a
-PTY-backed tool session: retain and poll that same session until it succeeds.
+In Codex, run exactly `BROWSER=echo codex mcp login 2ools` through the command
+tool with TTY enabled and an initial one-second yield. The result must contain
+a live session ID; retain and poll that same session until it succeeds.
 A refused localhost callback or a browser wait that returns while still on the
 approval page is failure, not completion; restart OAuth with a fresh listener.
 

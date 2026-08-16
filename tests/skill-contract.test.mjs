@@ -25,7 +25,9 @@ test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /this client's in-app browser/);
   assert.match(skill, /Do not end the turn\s+while authorization is pending/);
   assert.match(skill, /client closed the callback tab/);
-  assert.match(skill, /PTY-backed tool session/);
+  assert.match(skill, /BROWSER=echo codex mcp login 2ools/);
+  assert.match(skill, /TTY enabled/);
+  assert.match(skill, /live session ID/);
   assert.match(skill, /refused localhost callback/);
   assert.doesNotMatch(skill, /oauth\/device_authorization|claude mcp add|"mcpServers"/);
   assert.doesNotMatch(skill, /no account.*build|build.*no account/i);
