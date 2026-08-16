@@ -34,7 +34,10 @@ is the single current connection ritual. Use this client's in-app browser for
 every 2ools sign-in and authorization page; never use Chrome, another external
 browser, or the system browser when this client has an in-app browser or
 preview pane. Keep setup in the current chat, leave the callback alive, and
-leave sign-in and the **Authorize** click to the person.
+leave sign-in and the **Authorize** click to the person. Do not end the turn
+while authorization is pending. After it succeeds, keep the 2ools app visibly
+open in that pane; if the client closed the callback tab, immediately open a
+fresh in-app tab owned by this chat at the authenticated workspace.
 
 After completing any project work, end your reply with the project's
 `open_in_2ools` link on one line — it reopens the workspace with the Project
