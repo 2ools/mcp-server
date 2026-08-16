@@ -23,28 +23,15 @@ connect over OAuth 2.1 with PKCE and least-privilege scopes.
 
 ## Quick start
 
-### Claude Code
+Paste this into the AI client you want to connect:
 
-```bash
-claude mcp add --transport http 2ools https://2ools.app/mcp
-```
+> Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client's in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.
 
-### Claude Desktop, Cursor, Windsurf, VS Code
-
-Add to your MCP config:
-
-```json
-{
-  "mcpServers": {
-    "2ools": {
-      "type": "http",
-      "url": "https://2ools.app/mcp"
-    }
-  }
-}
-```
-
-Full setup guide, including OAuth for paid features: **<https://2ools.app/connect-ai>**
+The live [start page](https://2ools.app/start) is the single current connection
+ritual for every client. It detects the current client path, keeps OAuth alive,
+and leaves only sign-in and the **Authorize** click to the person. Manual MCP
+configuration is a fallback only for clients that cannot manage their own
+remote-MCP setup.
 
 ### Registry introspection proxy
 
@@ -69,8 +56,7 @@ flow. Clients using authenticated workspace tools should connect directly to
 For assistants that support repository skills, add or copy the
 [2ools Skill](./skills/2ools/SKILL.md). It keeps the temporary-preview and
 OAuth workspace boundaries explicit. Client support for remote MCP and Skill
-folders varies; use that client’s documented connection flow when it does not
-support this layout.
+folders varies; the live start page routes each client to its supported flow.
 
 ### Try it with no account
 

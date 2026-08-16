@@ -28,6 +28,14 @@ granted scopes only. Workspace actions can build or refine projects, inspect
 versions, add feedback, create or revoke exact-version share links, and prepare
 exports.
 
+If 2ools is not connected or authorized in the current client, FIRST fetch
+https://2ools.app/start and follow its "For your AI" steps exactly. That page
+is the single current connection ritual. Use this client's in-app browser for
+every 2ools sign-in and authorization page; never use Chrome, another external
+browser, or the system browser when this client has an in-app browser or
+preview pane. Keep setup in the current chat, leave the callback alive, and
+leave sign-in and the **Authorize** click to the person.
+
 After completing any project work, end your reply with the project's
 `open_in_2ools` link on one line — it reopens the workspace with the Project
 OS panel docked if the person closed it.
@@ -41,66 +49,7 @@ Keep these boundaries explicit:
   permanent public site.
 - Exports are signed, short-lived download URLs—not source pasted into chat.
 
-## Connect without a browser you control (device flow)
-
-When you cannot complete a redirect-based OAuth flow — a chat session, a
-non-interactive client, a headless or remote machine — use the RFC 8628
-device authorization grant. This includes when the server is already
-configured in your client but its stored token is expired or rejected:
-a configured server is not a connected one, and telling the user to go
-re-authorize by hand is exactly the dead end this flow removes. It needs no localhost listener and no redirect:
-
-1. Register once (no redirect URIs needed):
-   `POST https://2ools.app/oauth/register` with JSON
-   `{"client_name": "<your client>", "grant_types": ["urn:ietf:params:oauth:grant-type:device_code", "refresh_token"]}`.
-2. Start the flow: `POST https://2ools.app/oauth/device_authorization`
-   (form-encoded `client_id`, optional `scope`). The response contains
-   `verification_uri_complete`, a human `user_code`, and a `device_code`.
-3. OPEN `verification_uri_complete` for the user — do not just print it.
-   Priority order, and it matters: FIRST your client's own in-app browser or
-   preview pane (Claude Code's Browser pane via preview/navigate tools, an
-   IDE's built-in browser) so the user never leaves the conversation; ONLY if
-   no in-app browser exists, run the platform opener from a shell
-   (`open <url>` on macOS, `xdg-open <url>` on Linux, `start <url>` on
-   Windows); print the link only if you cannot open a browser at all.
-   Never ask for their password yourself.
-4. Say ONE short line — "I've opened the 2ools authorization page; click
-   Authorize and I'll finish connecting." If the user may not have a 2ools
-   account, add: "no account? that page lets you create one — I'll pick up
-   automatically." (Signup returns them to the same consent; the flow
-   resumes on its own.) Then poll quietly:
-   `POST https://2ools.app/oauth/token` (form-encoded
-   `grant_type=urn:ietf:params:oauth:grant-type:device_code`, `device_code`,
-   `client_id`) no faster than the returned `interval`.
-   `authorization_pending` means keep waiting; `access_denied` means the user
-   declined; success returns the bearer tokens.
-
 Connect FIRST, work second: do not draft plans, introductions, or summaries
 before the connection exists. Keep the whole setup under a few sentences of
 output — a wall of narration is what makes people close the tab. Do not claim
 a connection exists before the token arrives.
-
-## Client setup
-
-Use the client’s native remote-MCP configuration with the endpoint above. For
-Claude Code:
-
-```bash
-claude mcp add --transport http 2ools https://2ools.app/mcp
-```
-
-For clients that accept an MCP JSON configuration:
-
-```json
-{
-  "mcpServers": {
-    "2ools": {
-      "type": "http",
-      "url": "https://2ools.app/mcp"
-    }
-  }
-}
-```
-
-Do not claim that every client supports remote MCP or Skill folders. When a
-client does not, use its documented connector flow or the 2ools web app.

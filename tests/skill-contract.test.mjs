@@ -10,6 +10,8 @@ const packageManifest = JSON.parse(
 );
 const dockerfile = await readFile(new URL("../Dockerfile", import.meta.url), "utf8");
 const proxy = await readFile(new URL("../proxy.mjs", import.meta.url), "utf8");
+const canonicalPrompt =
+  'Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client\'s in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.';
 
 test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/mcp/);
@@ -18,12 +20,17 @@ test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /does \*\*not\*\* save a 2ools project/);
   assert.match(skill, /OAuth 2\.1 with PKCE/);
   assert.match(skill, /Version approval is separate authority/);
+  assert.match(skill, /https:\/\/2ools\.app\/start/);
+  assert.match(skill, /single current connection ritual/);
+  assert.match(skill, /this client's in-app browser/);
+  assert.doesNotMatch(skill, /oauth\/device_authorization|claude mcp add|"mcpServers"/);
   assert.doesNotMatch(skill, /no account.*build|build.*no account/i);
 });
 
 test("README links the public skill and keeps the free preview boundary", () => {
   assert.match(readme, /\[2ools Skill\]\(\.\/skills\/2ools\/SKILL\.md\)/);
   assert.match(readme, /One tool is free and needs no account at all/);
+  assert.ok(readme.includes(canonicalPrompt));
 });
 
 test("public discovery makes the Free-to-paid scope boundary explicit", () => {
