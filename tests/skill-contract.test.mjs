@@ -11,7 +11,7 @@ const packageManifest = JSON.parse(
 const dockerfile = await readFile(new URL("../Dockerfile", import.meta.url), "utf8");
 const proxy = await readFile(new URL("../proxy.mjs", import.meta.url), "utf8");
 const canonicalPrompt =
-  'Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client\'s in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.';
+  'Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client\'s in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane, opening a fresh in-app tab owned by this chat if the client closed the callback tab. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.';
 
 test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/mcp/);
@@ -23,6 +23,8 @@ test("2ools skill preserves the public MCP authority boundary", () => {
   assert.match(skill, /https:\/\/2ools\.app\/start/);
   assert.match(skill, /single current connection ritual/);
   assert.match(skill, /this client's in-app browser/);
+  assert.match(skill, /Do not end the turn\s+while authorization is pending/);
+  assert.match(skill, /client closed the callback tab/);
   assert.doesNotMatch(skill, /oauth\/device_authorization|claude mcp add|"mcpServers"/);
   assert.doesNotMatch(skill, /no account.*build|build.*no account/i);
 });

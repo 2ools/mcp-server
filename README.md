@@ -25,7 +25,7 @@ connect over OAuth 2.1 with PKCE and least-privilege scopes.
 
 Paste this into the AI client you want to connect:
 
-> Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client's in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.
+> Connect this client to 2ools (github.com/2ools/mcp-server, MCP endpoint https://2ools.app/mcp). Use this client's in-app browser for every 2ools sign-in and authorization page; never use Chrome, another external browser, or the system browser when this client has an in-app browser or preview pane. Do not end your turn while authorization is pending; after it succeeds, keep the 2ools app visibly open in that pane, opening a fresh in-app tab owned by this chat if the client closed the callback tab. Fetch https://2ools.app/start and follow its "For your AI" steps exactly.
 
 The live [start page](https://2ools.app/start) is the single current connection
 ritual for every client. It detects the current client path, keeps OAuth alive,
